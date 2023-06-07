@@ -1,5 +1,5 @@
 all:
-	nvcc -lcuda -lcublas *.cu -o CNN  -arch=compute_20 -Wno-deprecated-gpu-targets
+	nvcc -lcuda -lcublas *.cu -o CNN  -Wno-deprecated-gpu-targets
 
 run:
 	./CNN
