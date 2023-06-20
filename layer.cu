@@ -41,6 +41,33 @@ Layer::Layer(int M, int N, int O)
 	cudaMemcpy(weight, h_weight, sizeof(float) * M * N, cudaMemcpyHostToDevice);
 }
 
+Layer::Layer(int M, int N, int O, float *h_bias, float *h_weight)
+{
+	this->M = M;
+	this->N = N;
+	this->O = O;
+	output = NULL;
+	preact = NULL;
+	bias = NULL;
+	weight = NULL;
+
+	float _h_weight[N][M];
+	for (int i = 0;i < N;i++) {
+		for (int j = 0;j < M;j++) {
+			_h_weight[i][j] = h_weight[i * M + j];
+		}
+	}
+
+	cudaMalloc(&output, sizeof(float) * O);
+	cudaMalloc(&preact, sizeof(float) * O);
+	cudaMalloc(&bias, sizeof(float) * N);
+	cudaMalloc(&weight, sizeof(float) * M * N);
+
+	cudaMemcpy(bias, h_bias, sizeof(float) * N, cudaMemcpyHostToDevice);
+
+	cudaMemcpy(weight, _h_weight, sizeof(float) * M * N, cudaMemcpyHostToDevice);
+}
+
 // Destructor
 Layer::~Layer()
 {

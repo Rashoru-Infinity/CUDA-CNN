@@ -26,6 +26,7 @@ class Layer {
 	float *d_weight;
 
 	Layer(int M, int N, int O);
+	Layer(int M, int N, int O, float *h_bias, float *h_weight);
 
 	~Layer();
 
