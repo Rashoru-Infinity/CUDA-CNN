@@ -7,3 +7,9 @@ All tests performed on an Nvidia GeForce 840M GPU, running CUDA 8.0.61.
 ### Compiling and Execution
 To compile just navigate to root and type `make`
 Executable can be run using `./CNN`
+
+# Performance Test
+Measure the time to inference of 10k images individually.
+```
+time find testset -type f | xargs -I{} ./CNN model {}
+```
