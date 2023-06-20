@@ -11,5 +11,5 @@ Executable can be run using `./CNN`
 # Performance Test
 Measure the time to inference of 10k images individually.
 ```
-time find testset -type f | xargs -I{} ./CNN model {}
+time ./CNN model 10000 < file_list
 ```
