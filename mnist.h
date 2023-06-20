@@ -86,7 +86,7 @@ _STATIC int mnist_load(
 	int i;
 	char tmp[4];
 
-	unsigned int image_cnt;
+	unsigned int image_cnt, label_cnt;
 	unsigned int image_dim[2];
 
 	FILE *ifp, *lfp = NULL;
@@ -117,15 +117,15 @@ _STATIC int mnist_load(
 	fread(tmp, 1, 4, ifp);
 	image_cnt = mnist_bin_to_int(tmp);
 
-	/*
-	fread(tmp, 1, 4, lfp);
-	label_cnt = mnist_bin_to_int(tmp);
-	*/
+	if (lfp) {
+	        fread(tmp, 1, 4, lfp);
+		label_cnt = mnist_bin_to_int(tmp);
+	}
 
-//	if (image_cnt != label_cnt) {
-//		return_code = -4; /* Element counts of 2 files mismatch */
-//		goto cleanup;
-//	}
+	if (lfp && image_cnt != label_cnt) {
+		return_code = -4; /* Element counts of 2 files mismatch */
+		goto cleanup;
+	}
 
 	for (i = 0; i < 2; ++i) {
 		fread(tmp, 1, 4, ifp);
@@ -154,10 +154,10 @@ _STATIC int mnist_load(
 #else
 		memcpy(d->data, read_data, 28*28);
 #endif
-/*
-		fread(tmp, 1, 1, lfp);
-		d->label = tmp[0];
-*/
+		if (lfp) {
+		        fread(tmp, 1, 1, lfp);
+			d->label = tmp[0];
+		}
 	}
 
 cleanup:
