@@ -66,8 +66,18 @@ int main(int argc, const  char **argv)
 			goto err;
 		}
 		if (argc == 3) {
-			mnist_load(argv[2], NULL, &test_set, &test_cnt);
-			classify(test_set[0].data);
+			if (stat(argv[2], NULL) == -1) {
+				int lines = atoi(argv[2]);
+				char file[255];
+				for (int i = 0;i < lines;i++) {
+					scanf("%s", file);
+					mnist_load(file, NULL, &test_set, &test_cnt);
+					classify(test_set[0].data);
+				}
+			} else {
+				mnist_load(argv[2], NULL, &test_set, &test_cnt);
+				classify(test_set[0].data);
+			}
 			goto cleanup;
 		}
 		loaddata(status);
